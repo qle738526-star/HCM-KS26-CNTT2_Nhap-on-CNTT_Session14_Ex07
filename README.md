@@ -1,0 +1,33 @@
+Phần 1: Phân tích vấn đề
+
+1. Bảng phân tích rủi ro:
+
+| Hạng mục | Rủi ro | Nguyên nhân | Xếp loại |
+| --- | --- | --- | --- |
+| Business Plan (20 trang) | 100% | Lỗi Công nghệ & Tổ chức: Tạo Single Point of Failure, lưu duy nhất trên 1 máy không backup | Cao |
+| Mã nguồn giao diện | 90% | Lỗi Công nghệ: Phụ thuộc USB vật lý dễ hỏng, mất, không được đồng bộ | Cao |
+| Database test user | 80% | Lỗi Tổ chức: Dữ liệu bị phân mảnh trên máy cá nhân, thiếu cập nhật realtime | Cao |
+| Slide Pitch | 50% | Lỗi Tổ chức: Lưu qua Zalo, đặt tên thủ công gây nhầm lẫn phiên bản | Trung bình |
+| Tài liệu SRS | 50% | Lỗi Tổ chức: Gửi email qua lại tạo nhiều bản rác, mất Nguồn sự thật duy nhất | Trung bình |
+
+2. Hiện tượng 23 phiên bản file:
+
+* Tên kỹ thuật: Version Hell (Địa ngục phiên bản) hoặc Data Fragmentation (Phân mảnh dữ liệu).
+* Nguyên nhân: Làm thủ công (tải về -> sửa -> gửi lại), không có tính năng cộng tác đồng thời nên mỗi máy tự sinh ra một nhánh dữ liệu riêng.
+* Hậu quả: Ghi đè sai code, mất thời gian ghép file, dễ sinh lỗi logic và làm trễ tiến độ.
+
+Phần 2: Sửa lỗi & Nghiệm thu
+
+3. Quy trình Hybrid Workflow:
+
+* Phần mềm: Google Drive for Desktop hoặc OneDrive.
+* Sơ đồ 3 bước:
+Local (Máy cá nhân: lưu vào ổ đĩa ảo G:\ để chạy nhanh) -> Auto Sync (Tự động đẩy lên mạng mỗi khi Ctrl+S) -> Cloud (Lưu an toàn, giữ Version History, sửa realtime).
+* Thư mục CẦN Sync: Code giao diện, Business Plan, Slide Pitch, Database, SRS.
+* Thư mục KHÔNG NÊN Sync: Phim, game cá nhân, node_modules, file Temp/Cache (quá nặng, gây nghẽn băng thông).
+
+4. Bẫy dữ liệu:
+
+* Biểu tượng: Mũi tên xoay tròn (đang sync). Nếu gập máy ngang sẽ hiện đám mây hoặc dấu chấm than đỏ (chưa sync xong).
+* Hệ thống xử lý: Bị đóng băng đồng bộ, dữ liệu trên Cloud bị cũ, dễ gây ra hiện tượng xung đột (Conflicted Copy) khi người khác mở sửa.
+* Thao tác đúng: Nhìn thanh Taskbar, chờ hiện Dấu tích xanh (Synced / Up to date) mới gập máy.
